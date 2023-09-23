@@ -19,7 +19,7 @@ pipeline{
 
         stage('Checkout Git') {
             steps {
-                git branch: 'main', credentialsId: '1f538342-affb-4763-b4dd-70aa119ae380', url: 'https://github.com/Micah-Shallom/php-todo-proj20.git'
+                git branch: 'main', credentialsId: 'c0cb85d4-4b8a-40de-b551-c1c1c1b5f183', url: 'https://github.com/Lukobet/php-todo-proj20.git'
             }
         }
 
@@ -27,8 +27,8 @@ pipeline{
             steps {
                 script {
                     
-                    sh " docker login -u mshallom -p ${env.PASSWORD}"
-                    sh " docker build -t mshallom/todo-proj20:${env.TAG} ."
+                    sh " docker login -u lukobet -p ${env.PASSWORD}"
+                    sh " docker build -t lukobet/todo:${env.TAG} ."
                 }
             }
         }
@@ -36,7 +36,7 @@ pipeline{
         stage('Creating docker container') {
             steps {
                 script {
-                    sh " docker run -d --name todo-app-${env.random_num} -p 8000:8000 mshallom/todo-proj20:${env.TAG}"
+                    sh " docker run -d --name todo-app-${env.random_num} -p 8000:8000 lukobet/todo:${env.TAG}"
                 }
             }
         }
@@ -45,7 +45,7 @@ pipeline{
             steps {
                 script {
                     sh "sleep 60"
-                    sh "curl -I 54.167.99.240:8000"
+                    sh "curl -I 18.209.160.169:8000"
                 }
             }
         }
@@ -53,7 +53,7 @@ pipeline{
         stage("Publish to Registry") {
             steps {
                 script {
-                    sh " docker push mshallom/todo-proj20:${env.TAG}"
+                    sh " docker push lukobet/todo:${env.TAG}"
                 }
             }
         }
@@ -63,7 +63,7 @@ pipeline{
                 script {
                     sh " docker stop todo-app-${env.random_num}"
                     sh " docker rm todo-app-${env.random_num}"
-                    sh " docker rmi mshallom/todo-proj20:${env.TAG}"
+                    sh " docker rmi lukobet/todo:${env.TAG}"
                 }
             }
         }
